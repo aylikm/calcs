@@ -1,3 +1,0 @@
-export const VALIDCHECK = 'VALIDCHECK'
-export const DELDATA = 'DELDATA'
-export const ALREADYDATAS = 'ALREADYDATAS'
