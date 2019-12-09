@@ -7,11 +7,7 @@ export const sum = (state) => {
 
   if (state.buy.rate.val !== 0) { //  金利が1%以上の場合
     state.payData.rateVal = state.buy.rate.val / 100 // 金利(%)
-    if (state.buy.rate.payMethod === '1') { // 元利均等
-      state.payData.rateCount = Math.floor(state.payData.priceVal * (state.payData.rateVal / 12) / (1 - Math.pow(1 + state.payData.rateVal / 12, -state.payData.paysNum)))
-    } else { // 元金均等
-      state.payData.constPrice = state.payData.priceVal
-    }
+    payMethods(state.buy.rate.payMethod, state.payData)
   } else { // 金利が0%の場合
     state.payData.constPrice = state.payData.priceVal
   }
@@ -54,6 +50,14 @@ export const sum = (state) => {
   }, state.buy)
 }
 
+const payMethods = (payMethod, stateItem) => {
+  if (payMethod === 1) { // 元利均等
+    stateItem.rateCount = Math.floor(stateItem.priceVal * (stateItem.rateVal / 12) / (1 - Math.pow(1 + stateItem.rateVal / 12, -stateItem.paysNum)))
+  } else { // 元金均等
+    stateItem.constPrice = stateItem.priceVal
+  }
+}
+
 const modalCalc = (data, method, result) => {
   // モーダル内に表示される全要素を削除
   Object.keys(result.detail.val).forEach((i) => {
@@ -61,10 +65,12 @@ const modalCalc = (data, method, result) => {
   }, result.detail.val)
 
   // モーダル用計算
+  console.log(data.paysNum)
+
   for (let i = 0; i < data.paysNum; i++) {
     data.rateCalc = Math.floor(data.priceVal * (data.rateVal / 12))
 
-    if (data.rateCount !== 0) { // 元利均等
+    if (method === 1) { // 元利均等
       data.principal = data.rateCount - data.rateCalc
     } else { // 元金均等
       data.principal = Math.floor(data.constPrice / data.paysNum)

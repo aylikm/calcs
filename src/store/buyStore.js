@@ -38,7 +38,7 @@ export const buyStore = {
         placeholder: '1',
         unit: '%/年',
         min: 0,
-        payMethod: '1',
+        payMethod: 1,
         valid: false,
         error: ''
       },
@@ -126,23 +126,6 @@ export const buyStore = {
     },
     buyResultList: []
   },
-  mutations: {
-    [types.VALIDCHECK] (state) {
-      if (validCheck(state.buy)) {
-        if (state.buy.price.val <= state.buy.deposit.val) {
-          alert('現金一括払い！')
-          return false
-        }
-        sum(state)
-      }
-    },
-    [types.DELDATA] (state, index) {
-      delData(state.buyResultList, index, 'buyEstate')
-    },
-    [types.ALREADYDATAS] (state) {
-      alreadyDatas(state.buyResultList, 'buyEstate')
-    }
-  },
   actions: {
     validCheck ({ commit }) {
       commit(types.VALIDCHECK)
@@ -152,6 +135,23 @@ export const buyStore = {
     },
     alreadyDatas ({ commit }) {
       commit(types.ALREADYDATAS)
+    }
+  },
+  mutations: {
+    [types.VALIDCHECK] (state) {
+      if (validCheck(state.buy)) {
+        if (state.buy.price.val <= state.buy.deposit.val) {
+          alert('現金一括払い！')
+          return
+        }
+        sum(state)
+      }
+    },
+    [types.DELDATA] (state, index) {
+      delData(state.buyResultList, index, 'buyEstate')
+    },
+    [types.ALREADYDATAS] (state) {
+      alreadyDatas(state.buyResultList, 'buyEstate')
     }
   }
 }

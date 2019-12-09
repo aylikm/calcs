@@ -10,7 +10,7 @@
             <template v-else-if="datasKey !== 'RenewelFeeSum'">
               {{ datasVal.name }} : {{ (datasVal.val).toLocaleString() }} {{ datasVal.unit }}
             </template>
-            <template v-else-if="datasVal.show === true">
+            <template v-else-if="datasVal.show">
               {{ datasVal.name }} : {{ (datasVal.val).toLocaleString() }} {{ datasVal.unit }}
             </template>
           </li>

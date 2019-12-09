@@ -1,9 +1,9 @@
 <template>
   <div>
-    <button @click="showModal = true">詳細</button>
+    <button @click="isShowModal = true">詳細</button>
     <transition name="modal">
-      <div class="modal" v-if="showModal">
-        <div class="modal-overlay" @click="showModal = false"></div>
+      <div class="modal" v-if="isShowModal">
+        <div class="modal-overlay" @click="isShowModal = false"></div>
         <div class="modal-wrap">
           <div class="modal-container">
             <table>
@@ -22,7 +22,7 @@
               </tr>
             </table>
             <div class="modal-close-wrap">
-              <button class="modal-close" @click="showModal = false"></button>
+              <button class="modal-close" @click="isShowModal = false"></button>
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@ export default {
   name: 'modal',
   data () {
     return {
-      showModal: false
+      isShowModal: false
     }
   }
 }
