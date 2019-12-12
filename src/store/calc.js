@@ -13,31 +13,9 @@ export const sum = (state) => {
   }
   modalCalc(state.payData, state.buy.rate.payMethod, state.buyResult)
 
-  Object.keys(state.buyResult).forEach((val) => {
-    switch (val) {
-      case 'name':
-        state.buyResult[val].val = state.buy.name.val
-        break
-      case 'price':
-        state.buyResult[val].val = state.buy.price.val - state.buy.deposit.val
-        break
-      case 'rateSum':
-        state.buyResult[val].val = Math.floor((state.payData.resultVal / 10000) * 10) / 10
-        break
-      case 'adminSum':
-        state.buyResult[val].val = Math.floor(((state.buy.year.val * 12 * state.buy.admin.val) / 10000) * 10) / 10
-        break
-      case 'reserveSum':
-        state.buyResult[val].val = Math.floor(((state.buy.year.val * 12 * state.buy.reserve.val) / 10000) * 10) / 10
-        break
-      case 'sum':
-        state.buyResult[val].val = state.buyResult.price.val + state.buyResult.rateSum.val + state.buyResult.adminSum.val + state.buyResult.reserveSum.val
-        break
-      case 'everyMonth':
-        state.buyResult[val].val = state.buy.year.val === 0 ? '-' : Math.round((state.buyResult.sum.val / state.buy.year.val / 12) * 10) / 10
-        break
-    }
-  }, state.buyResult)
+  Object.keys(obj).forEach((val) => {
+    obj[val](state, val)
+  }, obj)
 
   addData(state.buyResult, state.buyResultList, 'buyEstate')
 
@@ -48,6 +26,31 @@ export const sum = (state) => {
   Object.keys(state.buy).forEach((i) => {
     state.buy[i].val = null
   }, state.buy)
+}
+
+const obj = {
+  name: (state, val) => {
+    state.buyResult[val].val = state.buy.name.val
+  },
+  price: (state, val) => {
+    state.buyResult[val].val = state.buy.price.val - state.buy.deposit.val
+  },
+  rateSum: (state, val) => {
+    state.buyResult[val].val = Math.floor((state.payData.resultVal / 10000) * 10) / 10
+  },
+  adminSum: (state, val) => {
+    state.buyResult[val].val = Math.floor(((state.buy.year.val * 12 * state.buy.admin.val) / 10000) * 10) / 10
+  },
+  reserveSum: (state, val) => {
+    state.buyResult[val].val = Math.floor(((state.buy.year.val * 12 * state.buy.reserve.val) / 10000) * 10) / 10
+  },
+  sum: (state, val) => {
+    state.buyResult[val].val = state.buyResult.price.val + state.buyResult.rateSum.val + state.buyResult.adminSum.val + state.buyResult.reserveSum.val
+  },
+  everyMonth: (state, val) => {
+    state.buyResult[val].val = state.buy.year.val === 0 ? '-' : Math.round((state.buyResult.sum.val / state.buy.year.val / 12) * 10) / 10
+    console.log(state.buyResult.everyMonth.val)
+  }
 }
 
 const payMethods = (payMethod, stateItem) => {
@@ -65,7 +68,7 @@ const modalCalc = (data, method, result) => {
   }, result.detail.val)
 
   // モーダル用計算
-  console.log(data.paysNum)
+  // console.log(data.paysNum)
 
   for (let i = 0; i < data.paysNum; i++) {
     data.rateCalc = Math.floor(data.priceVal * (data.rateVal / 12))
